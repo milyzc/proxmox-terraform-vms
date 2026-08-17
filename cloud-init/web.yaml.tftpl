@@ -1,0 +1,37 @@
+#cloud-config
+hostname: ${hostname}
+manage_etc_hosts: true
+
+users:
+  - default
+%{ if length(ssh_public_keys) > 0 ~}
+    ssh_authorized_keys:
+%{ for key in ssh_public_keys ~}
+      - ${key}
+%{ endfor ~}
+%{ endif ~}
+
+package_update: true
+package_upgrade: false
+
+packages:
+  - qemu-guest-agent
+  - nginx
+  - curl
+
+write_files:
+  - path: /var/www/html/index.html
+    content: |
+      <html>
+        <body>
+          <h1>${lookup(extra, "site_message", "Hola desde ${hostname}")}</h1>
+        </body>
+      </html>
+    owner: root:root
+    permissions: "0644"
+
+runcmd:
+  - systemctl enable --now qemu-guest-agent
+  - systemctl enable --now nginx
+
+final_message: "cloud-init terminó de aprovisionar ${hostname} (web) después de $UPTIME segundos"

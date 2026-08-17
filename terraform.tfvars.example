@@ -1,0 +1,26 @@
+# Copiar este archivo a terraform.tfvars y completar con tus valores reales.
+# terraform.tfvars NO debe commitearse (ver .gitignore).
+
+proxmox_endpoint              = "https://proxmox.example.local:8006/"
+proxmox_api_token             = "terraform@pve!terraform-token=00000000-0000-0000-0000-000000000000"
+proxmox_insecure              = false
+proxmox_node                  = "pve"
+snippet_datastore_id          = "local"
+
+vm_name        = "vm-app-01"
+template_vm_id = 9001
+cores          = 2
+memory         = 2048
+datastore_id   = "local-lvm"
+bridge         = "vmbr0"
+
+# disk_size = 10  # opcional; si se omite, usa el tamaño del disco del template (sin resize)
+
+
+ip_config = "192.168.1.101/24"
+gateway   = "192.168.1.1"
+
+cloudinit_template = "default.yaml.tftpl"
+ssh_public_keys    = ["ssh-ed25519 AAAA... usuario@equipo"]
+
+tags = ["terraform", "app"]
